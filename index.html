@@ -791,19 +791,29 @@
   }
 
   function toggleGuardian() {
-    var checked = document.getElementById('ackMinor').checked;
-    var section = document.getElementById('guardianSection');
-    section.style.display = checked ? 'block' : 'none';
-    if (checked) {
-      initCanvas('gCanvas');
-      document.getElementById('gSigDate').value = new Date().toISOString().split('T')[0];
-    }
-  }
+  var checked = document.getElementById('ackMinor').checked;
+  var section = document.getElementById('guardianSection');
 
-  window.addEventListener('load', function() {
-    initCanvas('volCanvas');
-    document.getElementById('sigDate').value = new Date().toISOString().split('T')[0];
-  });
+  if (!section) return;
+
+  section.style.display = checked ? 'block' : 'none';
+
+  if (checked) {
+    // Delay ensures canvas exists *after* reveal
+    setTimeout(function () {
+      if (document.getElementById('gCanvas')) {
+        initCanvas('gCanvas');
+      }
+
+      var gSigDate = document.getElementById('gSigDate');
+      if (gSigDate) {
+        gSigDate.value = new Date().toISOString().split('T')[0];
+      }
+    }, 50);
+  }
+}
+;
+``
 </script>
 </body>
 </html>
