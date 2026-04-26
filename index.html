@@ -636,7 +636,7 @@
  
 // ── Power Automate Flow URL ───────────────────────────────────
 var FLOW_URL = 'https://default09526cd9201c42448e2c85561ffdb8.ee.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2ecdff616a304e41951c62a399400401/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=3cTlj4otIcklJevQh2J7IVQQzfHukdpmhhDeQoghnjk';
-``
+
  // ── Signature Canvas ─────────────────────────────────────────
 function initCanvas(id) {
   var canvas = document.getElementById(id);
@@ -668,7 +668,7 @@ function initCanvas(id) {
   function isCanvasBlank(id) {
     var canvas = document.getElementById(id);
     var data = canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height).data;
-    for (var i = 3; i < data.length; i += 4) { if (data[i] !== 0) return false; }
+    for (var i = 3; i < data.length; i +=4 { if (data[i] !== 0) return false; }
     return true;
   }
 
