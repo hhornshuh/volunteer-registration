@@ -669,7 +669,7 @@ function initCanvas(id) {
     for (var i = 3; i < data.length; i += 4) {if (data[i] !== 0) return false;}
     return true;
   }
-</script>
+
   // ── Submit ────────────────────────────────────────────────────
   async function submitForm() {
     var errBox     = document.getElementById('errBox');
@@ -801,7 +801,7 @@ function initCanvas(id) {
     initCanvas('volCanvas');
     document.getElementById('sigDate').value = new Date().toISOString().split('T')[0];
   });
-
+</script>
 // ── Submit ───────────────────────────────────────────────────────────────
 async function submitForm() {
     var errBox = document.getElementById('errBox');
