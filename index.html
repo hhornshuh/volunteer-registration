@@ -634,16 +634,14 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
  
-  // ── Power Automate Flow URL ───────────────────────────────────
-var FLOW_URL = 'https://default09526cd9201c42448e2c85561ffdb8.ee.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2ecdff616a304e41951c62a399400401/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=3cTlj4otIcklJevQh2J7IVQQzfHukdpmhhDeQoghnjk';'https://default09526cd9201c42448e2c85561ffdb8.ee.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2ecdff616a304e41951c62a399400401/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=3cTlj4otIcklJevQh2J7IVQQzfHukdpmhhDeQoghnjk';
-
-  // ── Signature Canvas ─────────────────────────────────────────
-  function initCanvas(id) {
-    var canvas = document.getElementById(id);
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
-    var drawing = false;
-
+// ── Power Automate Flow URL ───────────────────────────────────
+var FLOW_URL = 'https://default09526cd9201c42448e2c85561ffdb8.ee.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2ecdff616a304e41951c62a399400401/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=3cTlj4otIcklJevQh2J7IVQQzfHukdpmhhDeQoghnjk';
+// ── Signature Canvas ─────────────────────────────────────────
+function initCanvas(id) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var drawing = false;  
     function pos(e) {
       var r = canvas.getBoundingClientRect();
       var scaleX = canvas.width / r.width;
