@@ -668,7 +668,7 @@ function initCanvas(id) {
   function isCanvasBlank(id) {
     var canvas = document.getElementById(id);
     var data = canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height).data;
-    for (var i = 3; i < data.length; i +=4 { if (data[i] !== 0) return false; }
+    for (var i = 3; i < data.length; i += 4) {if (data[i] !== 0) return false;}; }
     return true;
   }
 
