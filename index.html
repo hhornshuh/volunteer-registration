@@ -813,21 +813,13 @@ function initCanvas(id) {
 // 3. Paste that URL between the quotes below
 
 // ── Signature Canvas ─────────────────────────────────────────────────────
-/*
-THIS BLOCK IS INTENTIONALLY DISABLED
 
 function initCanvas(id) {
-  ...
-}
-function submitForm() {
-  ...
-}
-*/
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
 
-    var canvas = document.getElementById(id);
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
-    var drawing = false;
+  var ctx = canvas.getContext('2d');
+  var drawing = false;
 
     function pos(e) {
         var r = canvas.getBoundingClientRect();
