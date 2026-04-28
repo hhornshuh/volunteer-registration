@@ -467,7 +467,11 @@
     name="email"
     required
     placeholder="you@email.com">
-  <small id="emailError" style="color:red; display:none;"> Insert a valid email </small>
+   oninput="validateEmail(this)"
+   onblur="validateEmail(this)">
+  <small id="emailError" style="color:#DC2626; display:none; font-size:11.5px; margin-top:2px;">
+    ⚠️ Please enter a valid email address (e.g. name@example.com)
+  </small>
       </div>
       <div class="field">
         <label for="orgRep">Organization Representing <span class="req">*</span></label>
@@ -1143,6 +1147,26 @@ window.addEventListener('load', function () {
     document.getElementById('sigDate').value =
         new Date().toISOString().split('T')[0];
 });
+  function validateEmail(input) {
+  var emailError = document.getElementById('emailError');
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (input.value.trim() === '') {
+    // Empty — hide error, let required validation catch it on submit
+    emailError.style.display = 'none';
+    input.style.borderColor = '';
+  } else if (!emailRegex.test(input.value.trim())) {
+    // Invalid format — show error in red
+    emailError.style.display = 'block';
+    input.style.borderColor = '#DC2626';
+    input.style.boxShadow = '0 0 0 3px rgba(220,38,38,0.1)';
+  } else {
+    // Valid — show green confirmation
+    emailError.style.display = 'none';
+    input.style.borderColor = '#2f903f';
+    input.style.boxShadow = '0 0 0 3px rgba(47,144,63,0.1)';
+  }
+}
 </script>
 </body>
 </html>
