@@ -461,8 +461,13 @@
         </div>
         <div class="field">
           <label for="email">Email Address <span class="req">*</span></label>
-          <input type="email" id="email" name="email" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" placeholder="you@email.com" title="Please enter a valid email address (example: name@example.com)" />
-        </div>
+          <input
+    type="email"
+    id="email"
+    name="email"
+    required
+    placeholder="you@email.com">
+  <small id="emailError" style="color:red; display:none;"> Insert a valid email </small>
       </div>
       <div class="field">
         <label for="orgRep">Organization Representing <span class="req">*</span></label>
