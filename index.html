@@ -714,7 +714,8 @@ function initCanvas(id) {
     if (!fName)      errors.push('First Name');
     if (!lName)      errors.push('Last Name');
     if (!phone)      errors.push('Phone Number');
-    if (!email)      errors.push('Email Address');
+   if (!email) {errors.push('Email Address');} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errors.push('Valid Email Address (check format)');}
     if (!orgRep)     errors.push('Organization Representing');
     if (!ecName)     errors.push('Emergency Contact Name');
     if (!ecPhone)    errors.push('Emergency Contact Phone');
