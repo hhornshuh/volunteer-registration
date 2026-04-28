@@ -459,19 +459,10 @@
           <label for="phone">Phone Number <span class="req">*</span></label>
           <input type="tel" id="phone" placeholder="(XXX) XXX-XXXX"/>
         </div>
-        <div class="field">
+       <div class="field">
           <label for="email">Email Address <span class="req">*</span></label>
-          <input
-    type="email"
-    id="email"
-    name="email"
-    required
-    placeholder="you@email.com">
-   oninput="validateEmail(this)"
-   onblur="validateEmail(this)">
-  <small id="emailError" style="color:#DC2626; display:none; font-size:11.5px; margin-top:2px;">
-    ⚠️ Please enter a valid email address (e.g. name@example.com)
-  </small>
+          <input type="email" id="email" name="email" required placeholder="you@email.com" oninput="validateEmail(this)" onblur="validateEmail(this)">
+          <small id="emailError" style="color:#DC2626; display:none; font-size:11.5px; margin-top:2px;">⚠️ Please enter a valid email address (e.g. name@example.com)</small>
       </div>
       <div class="field">
         <label for="orgRep">Organization Representing <span class="req">*</span></label>
