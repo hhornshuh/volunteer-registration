@@ -989,9 +989,9 @@
         GName:      gName || '',
         GPhone:     gPhone || '',
         GAck:       ackGuardian,
-        GSig: ackMinor ? document.getElementById('gCanvas').toDataURL('image/png').split(',')[1] : '',
+        GSig:       ackMinor ? document.getElementById('gCanvas').toDataURL('image/png').split(',')[1] : '',
         GDate:      ackMinor ? new Date(document.getElementById('gSigDate').value).toISOString() : null,
-        SigName: sigData.split(',')[1],
+        SigName:    sigData.split(',')[1],
         SigDate:    new Date(document.getElementById('sigDate').value).toISOString(),
         Submit:     new Date().toISOString()
       };
