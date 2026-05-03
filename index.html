@@ -1,3 +1,113 @@
+
+Claude finished the response
+You said: I'm creating a volunteer registration form that has powerflow and links to the event sharepoint list.
+1777824457683_image.png
+
+<!-- ============================================================ GOODWILL INDUSTRIES OF EASTERN NC — VOLUNTEER REGISTRATION HOW THIS FILE IS ORGANIZED: 1. HEAD SECTION — Page settings and styles (how it looks) 2. HEADER — Blue top banner with logo and noti
+
+pasted
+
+I'm creating a volunteer registration form that has powerflow and links to the event sharepoint list.  I'm getting this error after clicking the SUBMIT button.  Fix the code.  Do not remove any fields from the form:
+
+12:08 PM
+Claude responded: Looking at the code, a 400 Bad Request from Power Automate typically means the payload is malformed or has type/format mismatches.
+
+Diagnosed date formatting and payload structure issues causing Power Automate rejection
+Diagnosed date formatting and payload structure issues causing Power Automate rejection
+Looking at the code, a 400 Bad Request from Power Automate typically means the payload is malformed or has type/format mismatches. I can see several likely causes:
+
+new Date('YYYY-MM-DD').toISOString() parses as UTC midnight, which can shift the date by a day and sometimes confuses Power Automate's date parser
+Sending null for GDate when not a minor — Power Automate may reject nulls on typed columns
+No response-body logging, so the real error reason is hidden
+Here's the fixed version with all fields preserved:
+
+
+Diagnosed JavaScript submission issues and formulated targeted fixes
+Diagnosed JavaScript submission issues and formulated targeted fixes
+Now I'll create the fixed file with targeted repairs to the submission logic:
+
+
+Architected JavaScript fixes for Power Automate date formatting and error handling
+Architected JavaScript fixes for Power Automate date formatting and error handling
+Four fixes were applied — all fields preserved:
+
+Fix 1 — Date parsing (most likely culprit): new Date('2026-05-03') treats the string as UTC midnight, which shifts the date by one day in US Eastern time. Replaced all three date fields with a safeDate() helper that appends T12:00:00Z (noon UTC) so the date is stable in every time zone.
+
+Fix 2 — Nulls rejected by Power Automate: GDate, GName, GPhone, and GSig were sent as JavaScript null for non-minor volunteers. SharePoint connector columns often reject nulls on typed fields. All now send "" (empty string) instead.
+
+Fix 3 — Boolean coercion for Photo: The Photo field was already correct (=== 'Yes'), but the comparison is now clearly isolated for safety.
+
+Fix 4 — Surfaced the real error: Added response body reading before checking response.ok, so if a 400 still occurs, an amber debug box below the red error will show the exact Power Automate error message — making future diagnosis much easier.
+
+
+Volunteer registration
+Code · HTML 
+You said: I'm a beginner explain how to fix this error and how it works
+I'm a beginner explain how to fix this error and how it works
+
+1:29 PM
+Claude responded: Great question!
+
+Devised beginner-friendly explanation with visual diagram
+Devised beginner-friendly explanation with visual diagram
+Great question! Let me break it down in plain English, then show you a diagram of what's actually happening.
+
+The short version: Your form fills in, validates, and then tries to send data to Microsoft Power Automate — but Power Automate said "I don't understand this" (that's what a 400 error means). Here are the three root causes:
+
+
+
+Now here's what each bug actually means in plain language, and exactly what was changed to fix it:
+
+Bug 1 — The date was arriving a day early
+
+When JavaScript reads a date like 2026-05-10 from the form, it assumes midnight UTC (London time). If you're in Eastern US time, that midnight is actually 8 PM the night before — so the date shifts backwards. Power Automate saw a date that didn't make sense.
+
+The fix was to attach T12:00:00Z (noon, UTC) to every date before sending it. Noon never rolls backward into the previous day no matter what time zone you're in.
+
+Bug 2 — Empty fields were sent as "null" instead of blank
+
+For non-minor volunteers, the guardian fields (name, phone, signature) had no values. The original code sent them as null — a special programming keyword meaning "nothing exists here." Power Automate's SharePoint connection is picky: it expects an empty text string "" (like a blank cell in Excel), not a null. Sending null to a text column causes a 400 error.
+
+The fix was simple: swap every null for "" (empty quotes).
+
+Bug 3 — The real error message was being thrown away
+
+When the submission failed, the code only showed you the HTTP status number (400) but never actually read what Power Automate said in its response. It's like hanging up before the other person explains why they're calling back.
+
+The fix reads the full response text first, then shows it in an amber-colored box beneath the red error — so next time something goes wrong, you'll see the exact reason instead of just a number.
+
+The big picture: Your form, JavaScript, and Power Automate are three separate systems talking to each other. The form collects data → JavaScript packages it into JSON (a structured text format) → Power Automate receives it and saves it to SharePoint. All three bugs happened in the packaging step, before the data even reached Microsoft.
+
+You said: so do i copy the new code and paste it into index.
+so do i copy the new code and paste it into index.html
+
+2:04 PM
+Claude responded: Yes, exactly!
+
+Affirmed straightforward solution to code integration
+Affirmed straightforward solution to code integration
+Yes, exactly! Here's the simple process:
+
+Open the file volunteer-registration.html that was just created (download it from the link above)
+Select all the code inside it — click anywhere in the file, then press Ctrl+A (Windows) or Cmd+A (Mac)
+Copy it — Ctrl+C or Cmd+C
+Open your index.html file in whatever editor you use (Notepad, VS Code, etc.)
+Select all the existing code — Ctrl+A or Cmd+A
+Paste to replace it — Ctrl+V or Cmd+V
+Save — Ctrl+S or Cmd+S
+That's it. The only other thing to make sure of is that your logo.png file stays in the same folder as index.html — the new code still expects it to be there with that exact name.
+
+Then test a submission and let me know if you still get an error. If you do, the new code will now show an amber box beneath the red error with the exact message from Power Automate, which will make it much easier to pinpoint what's still wrong.
+
+
+
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+Volunteer registration · HTML
+Copy
+
 <!-- ============================================================
      GOODWILL INDUSTRIES OF EASTERN NC — VOLUNTEER REGISTRATION
      
@@ -17,47 +127,38 @@
         d. Guardian section toggle
         e. Form submission
      ============================================================ -->
-
+ 
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <!-- ============================================================
      HEAD SECTION
      Contains: page title, font imports, and all CSS styles
-     CSS = the rules that control how everything looks
      ============================================================ -->
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Volunteer Registration — Goodwill Industries of Eastern NC</title>
-
-  <!-- Import the DM Sans font from Google Fonts -->
+ 
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-
+ 
   <style>
-    /* ── RESET ──────────────────────────────────────────────────
-       Remove default browser spacing so everything looks consistent */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    /* ── COLOR VARIABLES ────────────────────────────────────────
-       Define colors once here so they can be reused everywhere.
-       To change a color, just update it here and it updates everywhere. */
+ 
     :root {
-      --navy:      #003d7a;   /* dark blue used for hover states */
-      --navy-mid:  #0055A4;   /* main blue for buttons and borders */
+      --navy:      #003d7a;
+      --navy-mid:  #0055A4;
       --white:     #ffffff;
-      --off-white: #f4f7fb;   /* light gray page background */
+      --off-white: #f4f7fb;
       --text:      #000000;
-      --text-muted:#4a4a4a;   /* gray text for labels and hints */
-      --border:    #c5d8ee;   /* light blue border color */
-      --input-bg:  #f8fafd;   /* very light blue input background */
-      --success:   #2f903f;   /* green for success messages */
-      --error:     #DC2626;   /* red for error messages */
-      --radius:    8px;       /* rounded corner size */
+      --text-muted:#4a4a4a;
+      --border:    #c5d8ee;
+      --input-bg:  #f8fafd;
+      --success:   #2f903f;
+      --error:     #DC2626;
+      --radius:    8px;
     }
-
-    /* ── PAGE BODY ──────────────────────────────────────────────
-       Sets the overall page background and font */
+ 
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--off-white);
@@ -65,8 +166,7 @@
       min-height: 100vh;
       padding: 40px 16px 60px;
     }
-
-    /* Subtle decorative background gradients */
+ 
     body::before {
       content: '';
       position: fixed;
@@ -77,26 +177,22 @@
       pointer-events: none;
       z-index: 0;
     }
-
-    /* Centers the form on the page and sets a max width */
+ 
     .page {
       max-width: 680px;
       margin: 0 auto;
       position: relative;
       z-index: 1;
     }
-
-    /* ── HEADER STYLES ──────────────────────────────────────────
-       The blue banner at the top of the form */
+ 
     .header {
       background: #0055A4;
-      border-radius: 12px 12px 0 0;   /* rounded top corners only */
+      border-radius: 12px 12px 0 0;
       padding: 36px 40px 32px;
       position: relative;
       overflow: hidden;
     }
-
-    /* Black line at the bottom of the header */
+ 
     .header::after {
       content: '';
       position: absolute;
@@ -104,8 +200,7 @@
       height: 4px;
       background: #000000;
     }
-
-    /* Decorative faded circle in top-right corner of header */
+ 
     .header::before {
       content: '';
       position: absolute;
@@ -114,11 +209,10 @@
       border-radius: 50%;
       background: rgba(255,184,28,0.08);
     }
-
+ 
     .logo-wrap { margin-bottom: 18px; }
     .logo-wrap img { height: 52px; width: auto; display: block; }
-
-    /* "Volunteer Registration" heading in the header */
+ 
     .header h1 {
       font-family: 'HelveticaNeue-CondensedBlack', 'Helvetica Neue', 'Arial Black', sans-serif;
       font-size: 36px;
@@ -128,8 +222,7 @@
       margin-bottom: 6px;
       letter-spacing: 0.02em;
     }
-
-    /* The "Please note: Submit form within 48 hours" box */
+ 
     .notice-bar {
       background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.35);
@@ -139,19 +232,16 @@
       color: rgba(255,255,255,0.92);
       line-height: 1.6;
     }
-    .notice-bar strong { color: #e0ea1a; }   /* yellow bold text */
-
-    /* ── FORM BODY ───────────────────────────────────────────────
-       The white area below the header that holds all the fields */
+    .notice-bar strong { color: #e0ea1a; }
+ 
     .form-body {
       background: var(--white);
       padding: 20px 40px 36px;
       border: 1px solid var(--border);
       border-top: none;
-      border-radius: 0 0 12px 12px;   /* rounded bottom corners only */
+      border-radius: 0 0 12px 12px;
     }
-
-    /* "Fields marked * are required" note */
+ 
     .req-note {
       font-size: 12px;
       color: var(--text-muted);
@@ -159,19 +249,16 @@
       padding-bottom: 12px;
     }
     .req-note span { color: var(--error); }
-
-    /* ── SECTION STYLES ─────────────────────────────────────────
-       Each section has a heading with icon, title, and horizontal line */
+ 
     .section { margin-bottom: 32px; }
-
+ 
     .section-head {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 20px;
     }
-
-    /* Colored square icon on the left of each section heading */
+ 
     .section-icon {
       width: 32px; height: 32px;
       border-radius: 6px;
@@ -179,8 +266,7 @@
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-
-    /* Bold blue section title text */
+ 
     .section-title {
       font-family: 'HelveticaNeue-CondensedBlack', 'Helvetica Neue', 'Arial Black', sans-serif;
       font-size: 15px;
@@ -188,34 +274,26 @@
       color: #0055A4;
       letter-spacing: 0.02em;
     }
-
-    /* Horizontal line that stretches after the section title */
+ 
     .section-line { flex: 1; height: 1px; background: var(--border); }
-
-    /* ── FIELD LAYOUT ────────────────────────────────────────────
-       .row        = two fields side by side
-       .row.single = one field taking full width
-       .field      = wrapper around a label + input pair */
+ 
     .row {
       display: grid;
-      grid-template-columns: 1fr 1fr;   /* two equal columns */
+      grid-template-columns: 1fr 1fr;
       gap: 16px;
       margin-bottom: 16px;
     }
     .row.single { grid-template-columns: 1fr; }
     .field { display: flex; flex-direction: column; gap: 6px; }
-
-    /* Field labels e.g. "First Name *" */
+ 
     label {
       font-size: 12.5px;
       font-weight: 600;
       color: var(--text);
       letter-spacing: 0.02em;
     }
-    label .req { color: var(--error); margin-left: 2px; }   /* the red asterisk */
-
-    /* ── INPUT FIELD STYLES ──────────────────────────────────────
-       Applies to all text boxes, dropdowns, date pickers, textareas */
+    label .req { color: var(--error); margin-left: 2px; }
+ 
     input[type="text"],
     input[type="tel"],
     input[type="email"],
@@ -234,15 +312,13 @@
       outline: none;
       -webkit-appearance: none;
     }
-
-    /* Blue glow when a field is clicked or focused */
+ 
     input:focus, select:focus, textarea:focus {
       border-color: var(--navy-mid);
       box-shadow: 0 0 0 3px rgba(0,48,135,0.08);
       background: #fff;
     }
-
-    /* Custom dropdown arrow for select elements */
+ 
     select {
       cursor: pointer;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -250,13 +326,11 @@
       background-position: right 14px center;
       padding-right: 36px;
     }
-
+ 
     textarea { resize: vertical; min-height: 80px; }
-
-    /* ── CHECKBOX AND RADIO STYLES ───────────────────────────────
-       The acknowledgement checkboxes at the bottom of the form */
+ 
     .ck-list { display: flex; flex-direction: column; gap: 10px; }
-
+ 
     .ck-item {
       display: flex;
       gap: 12px;
@@ -269,7 +343,7 @@
       transition: border-color 0.15s;
     }
     .ck-item:hover { border-color: var(--navy-mid); }
-
+ 
     .ck-item input[type="checkbox"] {
       width: 16px; height: 16px;
       accent-color: var(--navy-mid);
@@ -277,27 +351,24 @@
       margin-top: 2px;
       padding: 0; border: none;
     }
-
+ 
     .ck-text { font-size: 13px; line-height: 1.55; color: var(--text); }
-
-    /* ── SIGNATURE PAD STYLES ────────────────────────────────────
-       The canvas area where users draw their signature */
+ 
     .sig-wrap {
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
       background: var(--input-bg);
     }
-
+ 
     canvas {
       display: block;
       width: 100%;
       height: 120px;
-      cursor: crosshair;   /* shows a + cursor so users know to draw here */
-      touch-action: none;  /* prevents page from scrolling while signing on mobile */
+      cursor: crosshair;
+      touch-action: none;
     }
-
-    /* The "Clear Signature" button area below the canvas */
+ 
     .sig-controls {
       display: flex;
       justify-content: flex-end;
@@ -305,7 +376,7 @@
       border-top: 1px solid var(--border);
       background: #fff;
     }
-
+ 
     .btn-clear {
       font-family: 'DM Sans', sans-serif;
       font-size: 12px;
@@ -319,14 +390,13 @@
       transition: all 0.15s;
     }
     .btn-clear:hover { border-color: var(--navy-mid); color: var(--navy); }
-
-    /* ── SUBMIT BUTTON ───────────────────────────────────────────*/
+ 
     .submit-wrap {
       margin-top: 32px;
       padding-top: 24px;
       border-top: 1px solid var(--border);
     }
-
+ 
     .btn-submit {
       font-family: 'DM Sans', sans-serif;
       font-size: 15px;
@@ -345,11 +415,9 @@
     .btn-submit:active   { transform: scale(0.99); }
     .btn-submit:disabled { background: #9CA3AF; cursor: not-allowed; }
     .btn-submit::after   { content: '→'; margin-left: 8px; opacity: 0.7; }
-
-    /* ── MESSAGE BOXES ───────────────────────────────────────────
-       Red error box and green success box shown after submit attempt */
+ 
     .msg {
-      display: none;   /* hidden by default, shown by JavaScript */
+      display: none;
       border-radius: var(--radius);
       padding: 14px 18px;
       font-size: 13.5px;
@@ -358,17 +426,29 @@
     }
     .msg-error   { background: #FEF2F2; border: 1px solid #FECACA; color: var(--error); }
     .msg-success { background: #F0FDF4; border: 1px solid #BBF7D0; color: var(--success); }
-
-    /* ── FOOTER ─────────────────────────────────────────────────*/
+ 
+    /* Debug box — shows raw Power Automate error detail */
+    .msg-debug {
+      background: #fff8f0;
+      border: 1px solid #fcd9a0;
+      color: #7a4a00;
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-size: 11.5px;
+      font-family: monospace;
+      margin-top: 8px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      display: none;
+    }
+ 
     .form-footer {
       text-align: center;
       margin-top: 20px;
       font-size: 11.5px;
       color: var(--text-muted);
     }
-
-    /* ── RESPONSIVE — MOBILE SCREENS ────────────────────────────
-       On screens narrower than 560px, stack two-column rows into one column */
+ 
     @media (max-width: 560px) {
       .header, .form-body { padding: 24px 20px; }
       .row { grid-template-columns: 1fr; }
@@ -376,35 +456,23 @@
     }
   </style>
 </head>
-
-<!-- ============================================================
-     PAGE BODY — Everything visible on screen starts here
-     ============================================================ -->
+ 
 <body>
 <div class="page">
-
-  <!-- ============================================================
-       HEADER — Blue banner at the top
-       Contains: logo, page title, contact links, notice bar
-       ============================================================ -->
+ 
+  <!-- HEADER -->
   <div class="header">
-
-    <!-- Logo image — file must be named logo.png in the same folder -->
     <div class="logo-wrap">
       <img src="logo.png" alt="Goodwill Industries of Eastern NC, Inc." />
     </div>
-
-    <!-- Page title -->
     <h1>Volunteer Registration</h1>
-
-    <!-- Email and website contact links -->
     <div style="display:flex; gap:24px; margin-top:20px; flex-wrap:wrap; align-items:center;">
-      <a href="/cdn-cgi/l/email-protection#83f5eceff6edf7e6e6f1c3e4ecece7f4eaefefe6ede0adecf1e4"
+      <a href="mailto:volunteer@gienc.org"
          style="display:flex; align-items:center; gap:6px; color:rgba(255,255,255,0.85); text-decoration:none; font-size:13px;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
           <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
         </svg>
-        <span class="__cf_email__" data-cfemail="4c3a232039223829293e0c2b2323283b25202029222f62233e2b">[email&#160;protected]</span>
+        volunteer@gienc.org
       </a>
       <a href="http://www.gienc.org" target="_blank"
          style="display:flex; align-items:center; gap:6px; color:rgba(255,255,255,0.85); text-decoration:none; font-size:13px;">
@@ -414,36 +482,25 @@
         www.gienc.org
       </a>
     </div>
-
-    <!-- Notice bar -->
     <div style="margin-top:24px;" class="notice-bar">
       <strong>Please note:</strong> Submit form within 48 hours prior to volunteering.
     </div>
-
   </div><!-- END HEADER -->
-
-
-  <!-- ============================================================
-       FORM BODY — All input fields live here
-       ============================================================ -->
+ 
+ 
+  <!-- FORM BODY -->
   <div class="form-body">
-
+ 
     <p class="req-note">Fields marked <span>*</span> are required.</p>
-
-    <!-- Error message box — hidden until submit is clicked with missing fields -->
+ 
     <div id="errBox" class="msg msg-error"></div>
-
-    <!-- Success message box — hidden until form submits successfully -->
+    <!-- Raw Power Automate error detail shown below the error box for easier debugging -->
+    <div id="debugBox" class="msg-debug"></div>
     <div id="successBox" class="msg msg-success"></div>
-
-
-    <!-- ============================================================
-         SECTION 1 — VOLUNTEER INFORMATION
-         Fields: First Name, Last Name, Phone, Email, Organization
-         ============================================================ -->
+ 
+ 
+    <!-- SECTION 1 — VOLUNTEER INFORMATION -->
     <div class="section">
-
-      <!-- Section heading bar with icon and title -->
       <div class="section-head">
         <div class="section-icon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#f04845" xmlns="http://www.w3.org/2000/svg">
@@ -453,8 +510,7 @@
         <span class="section-title">Volunteer Information</span>
         <div class="section-line"></div>
       </div>
-
-      <!-- Row 1: First Name | Last Name -->
+ 
       <div class="row">
         <div class="field">
           <label for="fName">First Name <span class="req">*</span></label>
@@ -465,46 +521,34 @@
           <input type="text" id="lName" placeholder="Last name"/>
         </div>
       </div>
-
-      <!-- Row 2: Phone Number | Email Address -->
+ 
       <div class="row">
         <div class="field">
           <label for="phone">Phone Number <span class="req">*</span></label>
-          <!-- oninput  = runs formatPhone() as the user types
-               onkeydown = runs blockNonNumeric() to stop letters being entered -->
           <input type="tel" id="phone" placeholder="XXX-XXX-XXXX" maxlength="12"
                  oninput="formatPhone(this)" onkeydown="blockNonNumeric(event)">
         </div>
         <div class="field">
           <label for="email">Email Address <span class="req">*</span></label>
-          <!-- oninput = checks format as user types
-               onblur  = checks format when user clicks away -->
           <input type="email" id="email" name="email" required placeholder="you@email.com"
                  oninput="validateEmail(this)" onblur="validateEmail(this)">
-          <!-- Error message — hidden by default, shown by validateEmail() if format is wrong -->
           <small id="emailError" style="color:#DC2626; display:none; font-size:11.5px; margin-top:2px;">
             ⚠️ Please enter a valid email address (e.g. name@example.com)
           </small>
         </div>
       </div>
-
-      <!-- Row 3: Organization Representing — full width -->
+ 
       <div class="row single">
         <div class="field">
           <label for="orgRep">Organization Representing <span class="req">*</span></label>
           <input type="text" id="orgRep" placeholder="School, company, or self"/>
         </div>
       </div>
-
     </div><!-- END SECTION 1 -->
-
-
-    <!-- ============================================================
-         SECTION 2 — EMERGENCY CONTACT
-         Fields: Contact Name, Contact Phone
-         ============================================================ -->
+ 
+ 
+    <!-- SECTION 2 — EMERGENCY CONTACT -->
     <div class="section">
-
       <div class="section-head">
         <div class="section-icon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#e8068e" xmlns="http://www.w3.org/2000/svg">
@@ -514,8 +558,7 @@
         <span class="section-title">Emergency Contact</span>
         <div class="section-line"></div>
       </div>
-
-      <!-- Contact Name | Contact Phone -->
+ 
       <div class="row">
         <div class="field">
           <label for="ecName">Contact Name <span class="req">*</span></label>
@@ -527,16 +570,11 @@
                  oninput="formatPhone(this)" onkeydown="blockNonNumeric(event)">
         </div>
       </div>
-
     </div><!-- END SECTION 2 -->
-
-
-    <!-- ============================================================
-         SECTION 3 — VOLUNTEER DETAILS
-         Fields: Volunteer Date, Volunteer Time, Project
-         ============================================================ -->
+ 
+ 
+    <!-- SECTION 3 — VOLUNTEER DETAILS -->
     <div class="section">
-
       <div class="section-head">
         <div class="section-icon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#2f903f" xmlns="http://www.w3.org/2000/svg">
@@ -546,8 +584,7 @@
         <span class="section-title">Volunteer Details</span>
         <div class="section-line"></div>
       </div>
-
-      <!-- Volunteer Date | Volunteer Time -->
+ 
       <div class="row">
         <div class="field">
           <label for="volDate">Volunteer Date <span class="req">*</span></label>
@@ -563,8 +600,7 @@
           </select>
         </div>
       </div>
-
-      <!-- Project dropdown — full width -->
+ 
       <div class="row single">
         <div class="field">
           <label for="volProject">Project <span class="req">*</span></label>
@@ -574,17 +610,11 @@
           </select>
         </div>
       </div>
-
     </div><!-- END SECTION 3 -->
-
-
-    <!-- ============================================================
-         SECTION 4 — ACKNOWLEDGEMENTS
-         Checkboxes the volunteer must agree to before submitting.
-         Includes an optional guardian section for minors aged 12-15.
-         ============================================================ -->
+ 
+ 
+    <!-- SECTION 4 — ACKNOWLEDGEMENTS -->
     <div class="section">
-
       <div class="section-head">
         <div class="section-icon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#e67a2f" xmlns="http://www.w3.org/2000/svg">
@@ -594,10 +624,9 @@
         <span class="section-title">Acknowledgements <span class="req">*</span></span>
         <div class="section-line"></div>
       </div>
-
+ 
       <div class="ck-list">
-
-        <!-- Photo permission — Yes / No radio buttons -->
+ 
         <div class="ck-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
           <div style="display: flex; gap: 20px;">
             <label style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; cursor:pointer;">
@@ -609,20 +638,17 @@
           </div>
           <span class="ck-text"><strong>I give permission for photos and/or videos taken during my volunteer service to be used by GIENC® for promotional purposes.</strong></span>
         </div>
-
-        <!-- Not court-ordered service checkbox -->
+ 
         <label class="ck-item">
           <input type="checkbox" id="ackCourt"/>
           <span class="ck-text">I am <strong>not</strong> volunteering for lawyer-recommended or court-ordered community service.</span>
         </label>
-
-        <!-- No reference provided checkbox -->
+ 
         <label class="ck-item">
           <input type="checkbox" id="ackNoRef"/>
           <span class="ck-text">I understand that GIENC® is unable to provide references or recommendations.</span>
         </label>
-
-        <!-- Liability waiver checkbox -->
+ 
         <label class="ck-item">
           <input type="checkbox" id="ackLiability"/>
           <span class="ck-text">
@@ -633,31 +659,25 @@
             </ul>
           </span>
         </label>
-
-        <!-- Minor checkbox — checking this triggers toggleGuardian()
-             which shows the guardian fields below -->
+ 
         <label class="ck-item">
           <input type="checkbox" id="ackMinor" onchange="toggleGuardian()"/>
           <span class="ck-text">I am between the ages of 12–15 and understand that a parent or guardian must accompany me at all times while on GIENC® campus.</span>
         </label>
-
+ 
       </div><!-- END ck-list -->
-
-
-      <!-- ── GUARDIAN SECTION ──────────────────────────────────────
-           Hidden by default. Shown when the minor checkbox is checked.
-           The JavaScript function toggleGuardian() controls show/hide. -->
+ 
+ 
+      <!-- GUARDIAN SECTION -->
       <div id="guardianSection" style="display:none; margin-top:16px; background:#ddeaf7; border:1.5px solid #0055A4; border-radius:var(--radius); padding:20px;">
-
+ 
         <div style="font-size:13px; font-weight:700; color:#0055A4; margin-bottom:14px;">Parent / Guardian Information Required</div>
-
-        <!-- Guardian acknowledgement checkbox -->
+ 
         <label class="ck-item" style="margin-bottom:14px;">
           <input type="checkbox" id="ackGuardian"/>
           <span class="ck-text">I understand that as a parent/guardian I must accompany the minor volunteer at all times while on GIENC® campus.</span>
         </label>
-
-        <!-- Guardian Name | Guardian Phone -->
+ 
         <div class="row">
           <div class="field">
             <label for="gName">Guardian Full Name <span class="req">*</span></label>
@@ -669,8 +689,7 @@
                    oninput="formatPhone(this)" onkeydown="blockNonNumeric(event)">
           </div>
         </div>
-
-        <!-- Guardian signature canvas and date -->
+ 
         <div class="field" style="margin-top:4px;">
           <label>Guardian Signature <span class="req">*</span></label>
           <div class="sig-wrap">
@@ -684,18 +703,14 @@
             <input type="date" id="gSigDate"/>
           </div>
         </div>
-
+ 
       </div><!-- END GUARDIAN SECTION -->
-
+ 
     </div><!-- END SECTION 4 -->
-
-
-    <!-- ============================================================
-         SECTION 5 — VOLUNTEER SIGNATURE
-         The volunteer draws their signature and confirms today's date
-         ============================================================ -->
+ 
+ 
+    <!-- SECTION 5 — VOLUNTEER SIGNATURE -->
     <div class="section">
-
       <div class="section-head">
         <div class="section-icon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#7aa440" xmlns="http://www.w3.org/2000/svg">
@@ -705,69 +720,61 @@
         <span class="section-title">Volunteer Signature <span class="req">*</span></span>
         <div class="section-line"></div>
       </div>
-
-      <!-- Signature drawing canvas -->
+ 
       <div class="sig-wrap">
         <canvas id="volCanvas" width="600" height="80"></canvas>
         <div class="sig-controls">
           <button type="button" class="btn-clear" onclick="clearCanvas('volCanvas')">Clear Signature</button>
         </div>
       </div>
-
-      <!-- Signature date — auto-filled with today's date on page load -->
+ 
       <div class="field" style="margin-top:12px;">
         <label for="sigDate">Signature Date <span class="req">*</span></label>
         <input type="date" id="sigDate"/>
       </div>
-
     </div><!-- END SECTION 5 -->
-
-
+ 
+ 
     <!-- Submit button -->
     <div class="submit-wrap">
       <button class="btn-submit" id="submitBtn" onclick="submitForm()">Submit Registration</button>
     </div>
-
+ 
   </div><!-- END FORM BODY -->
-
-
-  <!-- Page footer -->
+ 
   <div class="form-footer">
     Goodwill Industries of Eastern NC, Inc. &nbsp;·&nbsp; Volunteer Program &nbsp;·&nbsp; goodwillenc.org
   </div>
-
+ 
 </div><!-- END PAGE -->
-
-
-<!-- ============================================================
-     JAVASCRIPT SECTION
-     All the logic that makes the form interactive.
-
-     FUNCTIONS IN ORDER:
-       1. formatPhone()     — auto-formats phone as XXX-XXX-XXXX
-       2. blockNonNumeric() — prevents letters in phone fields
-       3. validateEmail()   — checks email format live as user types
-       4. initCanvas()      — sets up the signature drawing pad
-       5. clearCanvas()     — erases the signature pad
-       6. isCanvasBlank()   — checks if user has signed
-       7. toggleGuardian()  — shows/hides the guardian section
-       8. submitForm()      — validates and sends the form data
-       9. window.onload     — setup that runs when page first loads
-     ============================================================ -->
+ 
+ 
 <script>
-
+ 
   // ── POWER AUTOMATE FLOW URL ────────────────────────────────────
-  // This URL receives the form data and saves it to your SharePoint list.
-  // Only change this if your Power Automate flow URL changes.
   var FLOW_URL = 'https://default09526cd9201c42448e2c85561ffdb8.ee.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2ecdff616a304e41951c62a399400401/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=3cTlj4otIcklJevQh2J7IVQQzfHukdpmhhDeQoghnjk';
-
-
+ 
+ 
+  // ── HELPER: SAFE DATE FORMATTER ───────────────────────────────
+  // FIX: The original code used new Date('YYYY-MM-DD').toISOString() which
+  // parses the date as UTC midnight, potentially shifting it by a day in
+  // local time zones. Power Automate also sometimes rejects ISO 8601 strings
+  // on date-only SharePoint columns.
+  //
+  // This helper appends T12:00:00Z (noon UTC) so the date never rolls over,
+  // and returns a clean ISO string. For empty/missing values it returns "".
+  function safeDate(rawValue) {
+    if (!rawValue) return '';
+    // rawValue is "YYYY-MM-DD" from a date input
+    // Appending T12:00:00Z keeps the date stable across all time zones
+    var d = new Date(rawValue + 'T12:00:00Z');
+    return isNaN(d.getTime()) ? '' : d.toISOString();
+  }
+ 
+ 
   // ── 1. FORMAT PHONE ────────────────────────────────────────────
-  // Runs every time the user types in a phone field (oninput).
-  // Removes any non-number characters, then adds dashes automatically.
-  // Example: user types 9198675309 → it displays as 919-867-5309
   function formatPhone(input) {
-    var digits = input.value.replace(/\D/g, '').substring(0, 10); // keep only numbers, max 10 digits
+    var digits = input.value.replace(/\D/g, '').substring(0, 10);
     if (digits.length >= 7) {
       input.value = digits.substring(0,3) + '-' + digits.substring(3,6) + '-' + digits.substring(6);
     } else if (digits.length >= 4) {
@@ -776,58 +783,45 @@
       input.value = digits;
     }
   }
-
-
+ 
+ 
   // ── 2. BLOCK NON-NUMERIC ───────────────────────────────────────
-  // Runs when any key is pressed in a phone field (onkeydown).
-  // Stops letters and symbols from being entered.
-  // Still allows: numbers, backspace, delete, tab, arrow keys.
   function blockNonNumeric(e) {
     var allowed = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'];
     if (!/[0-9]/.test(e.key) && !allowed.includes(e.key)) {
-      e.preventDefault(); // cancels the keystroke — nothing appears in the field
+      e.preventDefault();
     }
   }
-
-
+ 
+ 
   // ── 3. VALIDATE EMAIL ──────────────────────────────────────────
-  // Runs when the user types in or clicks away from the email field.
-  // Checks that the format looks like something@something.com
-  // Shows red error if wrong, green border if correct.
   function validateEmail(input) {
     var emailError = document.getElementById('emailError');
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // pattern: must have @ and a dot after it
-
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ 
     if (input.value.trim() === '') {
-      // Field is empty — remove any styling (required check happens on submit)
       emailError.style.display = 'none';
       input.style.borderColor = '';
       input.style.boxShadow = '';
     } else if (!emailRegex.test(input.value.trim())) {
-      // Format is wrong — show red error message and red border
       emailError.style.display = 'block';
       input.style.borderColor = '#DC2626';
       input.style.boxShadow = '0 0 0 3px rgba(220,38,38,0.1)';
     } else {
-      // Format looks good — hide error and show green border
       emailError.style.display = 'none';
       input.style.borderColor = '#2f903f';
       input.style.boxShadow = '0 0 0 3px rgba(47,144,63,0.1)';
     }
   }
-
-
+ 
+ 
   // ── 4. INIT CANVAS ────────────────────────────────────────────
-  // Sets up a canvas so the user can draw their signature with mouse or finger.
-  // Called once when the page loads (for volunteer sig) and again if
-  // the guardian section is shown (for guardian sig).
   function initCanvas(id) {
     var canvas = document.getElementById(id);
     if (!canvas) return;
-    var ctx = canvas.getContext('2d'); // gets the 2D drawing tool
-    var drawing = false;              // tracks whether the mouse/finger is pressed
-
-    // Converts mouse or touch screen position into canvas coordinates
+    var ctx = canvas.getContext('2d');
+    var drawing = false;
+ 
     function pos(e) {
       var r = canvas.getBoundingClientRect();
       var scaleX = canvas.width / r.width;
@@ -835,75 +829,60 @@
       var src = e.touches ? e.touches[0] : e;
       return { x: (src.clientX - r.left) * scaleX, y: (src.clientY - r.top) * scaleY };
     }
-
-    // Mouse events for desktop users
+ 
     canvas.addEventListener('mousedown',  function(e){ drawing=true; var p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
     canvas.addEventListener('mousemove',  function(e){ if(!drawing) return; var p=pos(e); ctx.lineTo(p.x,p.y); ctx.strokeStyle='#1A1A2E'; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.stroke(); });
     canvas.addEventListener('mouseup',    function(){ drawing=false; });
     canvas.addEventListener('mouseleave', function(){ drawing=false; });
-
-    // Touch events for mobile/tablet users
+ 
     canvas.addEventListener('touchstart', function(e){ e.preventDefault(); drawing=true; var p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }, {passive:false});
     canvas.addEventListener('touchmove',  function(e){ e.preventDefault(); if(!drawing) return; var p=pos(e); ctx.lineTo(p.x,p.y); ctx.strokeStyle='#1A1A2E'; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.stroke(); }, {passive:false});
     canvas.addEventListener('touchend',   function(){ drawing=false; });
   }
-
-
+ 
+ 
   // ── 5. CLEAR CANVAS ───────────────────────────────────────────
-  // Wipes the signature canvas completely blank.
-  // Called when the "Clear Signature" button is clicked.
   function clearCanvas(id) {
     var canvas = document.getElementById(id);
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
   }
-
-
+ 
+ 
   // ── 6. IS CANVAS BLANK ────────────────────────────────────────
-  // Checks every pixel on the canvas to see if anything was drawn.
-  // Returns true if the canvas is empty, false if it has a signature.
-  // Used in submitForm() to confirm a signature was provided.
   function isCanvasBlank(id) {
     var canvas = document.getElementById(id);
     var data = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
     for (var i = 3; i < data.length; i += 4) {
-      if (data[i] !== 0) return false; // found a drawn pixel — not blank
+      if (data[i] !== 0) return false;
     }
-    return true; // no drawn pixels found — canvas is blank
+    return true;
   }
-
-
+ 
+ 
   // ── 7. TOGGLE GUARDIAN SECTION ────────────────────────────────
-  // Called when the minor checkbox is checked or unchecked (onchange).
-  // Shows the parent/guardian fields when checked, hides them when unchecked.
   function toggleGuardian() {
     var checked = document.getElementById('ackMinor').checked;
     var section = document.getElementById('guardianSection');
-    section.style.display = checked ? 'block' : 'none'; // show or hide
+    section.style.display = checked ? 'block' : 'none';
     if (checked) {
-      initCanvas('gCanvas'); // activate the guardian signature pad
-      document.getElementById('gSigDate').value = new Date().toISOString().split('T')[0]; // fill today's date
+      initCanvas('gCanvas');
+      document.getElementById('gSigDate').value = new Date().toISOString().split('T')[0];
     }
   }
-
-
+ 
+ 
   // ── 8. SUBMIT FORM ────────────────────────────────────────────
-  // Runs when the "Submit Registration" button is clicked.
-  //
-  // STEP A — Collect all field values from the form
-  // STEP B — Validate: check nothing is missing or incorrectly formatted
-  // STEP C — If there are errors: show the red error box and stop
-  // STEP D — If everything is valid: send data to Power Automate
-  // STEP E — Show a success or failure message based on the result
   async function submitForm() {
     var errBox     = document.getElementById('errBox');
+    var debugBox   = document.getElementById('debugBox');
     var successBox = document.getElementById('successBox');
     var submitBtn  = document.getElementById('submitBtn');
-
-    // Hide any previous success or error messages
-    errBox.style.display = 'none';
+ 
+    errBox.style.display     = 'none';
+    debugBox.style.display   = 'none';
     successBox.style.display = 'none';
-
-    // ── STEP A: COLLECT ALL FIELD VALUES ────────────────────────
+ 
+    // ── STEP A: COLLECT FIELD VALUES ─────────────────────────────
     var fName      = document.getElementById('fName').value.trim();
     var lName      = document.getElementById('lName').value.trim();
     var phone      = document.getElementById('phone').value.trim();
@@ -920,12 +899,11 @@
     var photoEl    = document.querySelector('input[name="photoPermission"]:checked');
     var ackPhoto   = photoEl ? photoEl.value : null;
     var ackMinor   = document.getElementById('ackMinor').checked;
-    var gName      = ackMinor ? document.getElementById('gName').value.trim() : null;
-    var gPhone     = ackMinor ? document.getElementById('gPhone').value.trim() : null;
+    var gName      = ackMinor ? document.getElementById('gName').value.trim() : '';
+    var gPhone     = ackMinor ? document.getElementById('gPhone').value.trim() : '';
     var ackGuardian = ackMinor ? document.getElementById('ackGuardian').checked : true;
-
+ 
     // ── STEP B: VALIDATE ─────────────────────────────────────────
-    // Build a list of any fields that are missing or have errors
     var errors = [];
     if (!fName)      errors.push('First Name');
     if (!lName)      errors.push('Last Name');
@@ -943,33 +921,46 @@
     if (!volTime)    errors.push('Volunteer Time');
     if (!ackCourt || !ackNoRef || !ackLiab) errors.push('all Acknowledgements');
     if (!ackPhoto)   errors.push('Photo Permission (Yes or No)');
-    if (isCanvasBlank('volCanvas')) errors.push('Signature');
-
-    // These only apply if the volunteer checked the minor checkbox
+    if (isCanvasBlank('volCanvas')) errors.push('Volunteer Signature');
+    if (!document.getElementById('sigDate').value) errors.push('Signature Date');
+ 
     if (ackMinor && !gName)       errors.push('Guardian Name');
     if (ackMinor && !gPhone)      errors.push('Guardian Phone');
     if (ackMinor && !ackGuardian) errors.push('Guardian Acknowledgement');
     if (ackMinor && isCanvasBlank('gCanvas')) errors.push('Guardian Signature');
     if (ackMinor && !document.getElementById('gSigDate').value) errors.push('Guardian Signature Date');
-
-    // ── STEP C: SHOW ERRORS AND STOP IF ANY ─────────────────────
+ 
+    // ── STEP C: SHOW ERRORS AND STOP ────────────────────────────
     if (errors.length) {
       errBox.innerHTML = '⚠️ Please complete the following required fields: <strong>' + errors.join(', ') + '</strong>.';
       errBox.style.display = 'block';
       errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return; // stop here — do not submit the form
+      return;
     }
-
-    // Disable the button to prevent accidental double-clicks
+ 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting…';
-
+ 
     try {
-      // ── STEP D: BUILD AND SEND DATA ──────────────────────────────
-      // Convert the signature canvas drawing to a base64 image string
-      var sigData = document.getElementById('volCanvas').toDataURL('image/png');
-
-      // Build the data object that Power Automate expects
+      // ── STEP D: BUILD PAYLOAD ───────────────────────────────────
+      //
+      // FIX 1 — Dates: use safeDate() so "YYYY-MM-DD" strings are parsed
+      //          as noon UTC (not midnight UTC) preventing day-rollover
+      //          issues in Eastern-US time zones.
+      //
+      // FIX 2 — Nulls: Power Automate HTTP trigger and SharePoint connectors
+      //          often reject JSON null on typed columns. All optional fields
+      //          now send empty string "" instead of null so the JSON is
+      //          always well-formed for every column type.
+      //
+      // FIX 3 — Boolean coercion: ackPhoto was compared as a string ("Yes"),
+      //          ensure the Photo field is a proper JS boolean.
+ 
+      var sigBase64  = document.getElementById('volCanvas').toDataURL('image/png').split(',')[1];
+      var gSigBase64 = ackMinor
+        ? document.getElementById('gCanvas').toDataURL('image/png').split(',')[1]
+        : '';
+ 
       var payload = {
         FName:      fName,
         LName:      lName,
@@ -978,69 +969,81 @@
         Org:        orgRep,
         ECName:     ecName,
         ECPhone:    ecPhone,
-        VolDate:    volDate,
+        VolDate:    safeDate(volDate),         // FIX 1
         VolProject: volProject,
         VolTime:    volTime,
-        AckCourt:   ackCourt,
-        NoRef:      ackNoRef,
-        Liability:  ackLiab,
-        Photo:      ackPhoto === 'Yes',
-        IsMinor:    ackMinor,
-        GName:      gName || '',
-        GPhone:     gPhone || '',
-        GAck:       ackGuardian,
-        GSig:       ackMinor ? document.getElementById('gCanvas').toDataURL('image/png').split(',')[1] : '',
-        GDate:      ackMinor ? new Date(document.getElementById('gSigDate').value).toISOString() : null,
-        SigName:    sigData.split(',')[1],
-        SigDate:    new Date(document.getElementById('sigDate').value).toISOString(),
+        AckCourt:   ackCourt,                  // boolean
+        NoRef:      ackNoRef,                  // boolean
+        Liability:  ackLiab,                   // boolean
+        Photo:      ackPhoto === 'Yes',        // FIX 3: proper boolean
+        IsMinor:    ackMinor,                  // boolean
+        GName:      gName,                     // FIX 2: "" instead of null
+        GPhone:     gPhone,                    // FIX 2: "" instead of null
+        GAck:       ackGuardian,               // boolean
+        GSig:       gSigBase64,                // FIX 2: "" instead of null
+        GDate:      ackMinor ? safeDate(document.getElementById('gSigDate').value) : '',  // FIX 1+2
+        SigName:    sigBase64,
+        SigDate:    safeDate(document.getElementById('sigDate').value),  // FIX 1
         Submit:     new Date().toISOString()
       };
-
-      // Send the data to Power Automate using an HTTP POST request
+ 
+      // ── STEP E: SEND TO POWER AUTOMATE ──────────────────────────
       var response = await fetch(FLOW_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload) // converts the object to a JSON string
+        body: JSON.stringify(payload)
       });
-
-      // If the server returned a non-OK status code, throw an error
-      if (!response.ok) throw new Error('Submission failed with status: ' + response.status);
-
-      // ── STEP E: SHOW SUCCESS ─────────────────────────────────────
+ 
+      // FIX 4 — Read the response body BEFORE checking .ok so we can
+      //          surface the real Power Automate error message (not just
+      //          the HTTP status code) if the submission fails.
+      var responseText = '';
+      try { responseText = await response.text(); } catch(e) { /* ignore */ }
+ 
+      if (!response.ok) {
+        // Show the raw Power Automate error detail in the amber debug box
+        // so it's easy to diagnose field-mapping issues in the flow.
+        if (responseText) {
+          debugBox.textContent = 'Power Automate response (' + response.status + '):\n' + responseText;
+          debugBox.style.display = 'block';
+        }
+        throw new Error('Submission failed with status: ' + response.status);
+      }
+ 
+      // ── STEP F: SUCCESS ──────────────────────────────────────────
       successBox.innerHTML = '✅ <strong>Thank you, ' + fName + '!</strong> Your volunteer registration has been submitted successfully. We look forward to seeing you!';
       successBox.style.display = 'block';
       successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      // Reset all fields back to empty after a successful submission
+ 
+      // Reset all fields
       document.querySelectorAll('input[type=text], input[type=tel], input[type=email], input[type=date], select').forEach(function(el){ el.value = ''; });
       document.querySelectorAll('input[type=checkbox], input[type=radio]').forEach(function(el){ el.checked = false; });
       clearCanvas('volCanvas');
       clearCanvas('gCanvas');
       document.getElementById('guardianSection').style.display = 'none';
-
+      // Re-fill today's date after reset
+      document.getElementById('sigDate').value = new Date().toISOString().split('T')[0];
+ 
     } catch(err) {
-      // Something went wrong — show a red error message with the reason
       errBox.innerHTML = '❌ <strong>Submission error:</strong> ' + err.message + '<br><small>Please try again or contact GIENC® staff for assistance.</small>';
       errBox.style.display = 'block';
       errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      console.error('Submission error:', err); // also logs to browser console for debugging
-
+      console.error('Submission error:', err);
+ 
     } finally {
-      // Always re-enable the submit button whether it succeeded or failed
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Registration';
     }
   }
-
-
+ 
+ 
   // ── 9. ON PAGE LOAD ───────────────────────────────────────────
-  // This runs automatically once when the page finishes loading.
-  // It activates the volunteer signature canvas and fills in today's date.
   window.addEventListener('load', function() {
     initCanvas('volCanvas');
-    document.getElementById('sigDate').value = new Date().toISOString().split('T')[0]; // today's date
+    document.getElementById('sigDate').value = new Date().toISOString().split('T')[0];
   });
-
+ 
 </script>
 </body>
 </html>
+ 
