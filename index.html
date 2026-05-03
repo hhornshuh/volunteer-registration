@@ -17,10 +17,10 @@
         d. Guardian section toggle
         e. Form submission
      ============================================================ -->
- 
+
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <!-- ============================================================
      HEAD SECTION
      Contains: page title, font imports, and all CSS styles
@@ -29,12 +29,12 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Volunteer Registration — Goodwill Industries of Eastern NC</title>
- 
+
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
- 
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
     :root {
       --navy:      #003d7a;
       --navy-mid:  #0055A4;
@@ -48,7 +48,7 @@
       --error:     #DC2626;
       --radius:    8px;
     }
- 
+
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--off-white);
@@ -56,7 +56,7 @@
       min-height: 100vh;
       padding: 40px 16px 60px;
     }
- 
+
     body::before {
       content: '';
       position: fixed;
@@ -67,14 +67,14 @@
       pointer-events: none;
       z-index: 0;
     }
- 
+
     .page {
       max-width: 680px;
       margin: 0 auto;
       position: relative;
       z-index: 1;
     }
- 
+
     .header {
       background: #0055A4;
       border-radius: 12px 12px 0 0;
@@ -82,7 +82,7 @@
       position: relative;
       overflow: hidden;
     }
- 
+
     .header::after {
       content: '';
       position: absolute;
@@ -90,7 +90,7 @@
       height: 4px;
       background: #000000;
     }
- 
+
     .header::before {
       content: '';
       position: absolute;
@@ -99,10 +99,10 @@
       border-radius: 50%;
       background: rgba(255,184,28,0.08);
     }
- 
+
     .logo-wrap { margin-bottom: 18px; }
     .logo-wrap img { height: 52px; width: auto; display: block; }
- 
+
     .header h1 {
       font-family: 'HelveticaNeue-CondensedBlack', 'Helvetica Neue', 'Arial Black', sans-serif;
       font-size: 36px;
@@ -112,7 +112,7 @@
       margin-bottom: 6px;
       letter-spacing: 0.02em;
     }
- 
+
     .notice-bar {
       background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.35);
@@ -123,7 +123,7 @@
       line-height: 1.6;
     }
     .notice-bar strong { color: #e0ea1a; }
- 
+
     .form-body {
       background: var(--white);
       padding: 20px 40px 36px;
@@ -131,7 +131,7 @@
       border-top: none;
       border-radius: 0 0 12px 12px;
     }
- 
+
     .req-note {
       font-size: 12px;
       color: var(--text-muted);
@@ -139,16 +139,16 @@
       padding-bottom: 12px;
     }
     .req-note span { color: var(--error); }
- 
+
     .section { margin-bottom: 32px; }
- 
+
     .section-head {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 20px;
     }
- 
+
     .section-icon {
       width: 32px; height: 32px;
       border-radius: 6px;
@@ -156,7 +156,7 @@
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
- 
+
     .section-title {
       font-family: 'HelveticaNeue-CondensedBlack', 'Helvetica Neue', 'Arial Black', sans-serif;
       font-size: 15px;
@@ -164,9 +164,9 @@
       color: #0055A4;
       letter-spacing: 0.02em;
     }
- 
+
     .section-line { flex: 1; height: 1px; background: var(--border); }
- 
+
     .row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -175,7 +175,7 @@
     }
     .row.single { grid-template-columns: 1fr; }
     .field { display: flex; flex-direction: column; gap: 6px; }
- 
+
     label {
       font-size: 12.5px;
       font-weight: 600;
@@ -183,7 +183,7 @@
       letter-spacing: 0.02em;
     }
     label .req { color: var(--error); margin-left: 2px; }
- 
+
     input[type="text"],
     input[type="tel"],
     input[type="email"],
@@ -202,13 +202,13 @@
       outline: none;
       -webkit-appearance: none;
     }
- 
+
     input:focus, select:focus, textarea:focus {
       border-color: var(--navy-mid);
       box-shadow: 0 0 0 3px rgba(0,48,135,0.08);
       background: #fff;
     }
- 
+
     select {
       cursor: pointer;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -216,11 +216,11 @@
       background-position: right 14px center;
       padding-right: 36px;
     }
- 
+
     textarea { resize: vertical; min-height: 80px; }
- 
+
     .ck-list { display: flex; flex-direction: column; gap: 10px; }
- 
+
     .ck-item {
       display: flex;
       gap: 12px;
@@ -233,7 +233,7 @@
       transition: border-color 0.15s;
     }
     .ck-item:hover { border-color: var(--navy-mid); }
- 
+
     .ck-item input[type="checkbox"] {
       width: 16px; height: 16px;
       accent-color: var(--navy-mid);
@@ -241,16 +241,16 @@
       margin-top: 2px;
       padding: 0; border: none;
     }
- 
+
     .ck-text { font-size: 13px; line-height: 1.55; color: var(--text); }
- 
+
     .sig-wrap {
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
       background: var(--input-bg);
     }
- 
+
     canvas {
       display: block;
       width: 100%;
@@ -258,7 +258,7 @@
       cursor: crosshair;
       touch-action: none;
     }
- 
+
     .sig-controls {
       display: flex;
       justify-content: flex-end;
@@ -266,7 +266,7 @@
       border-top: 1px solid var(--border);
       background: #fff;
     }
- 
+
     .btn-clear {
       font-family: 'DM Sans', sans-serif;
       font-size: 12px;
@@ -280,13 +280,13 @@
       transition: all 0.15s;
     }
     .btn-clear:hover { border-color: var(--navy-mid); color: var(--navy); }
- 
+
     .submit-wrap {
       margin-top: 32px;
       padding-top: 24px;
       border-top: 1px solid var(--border);
     }
- 
+
     .btn-submit {
       font-family: 'DM Sans', sans-serif;
       font-size: 15px;
@@ -305,7 +305,7 @@
     .btn-submit:active   { transform: scale(0.99); }
     .btn-submit:disabled { background: #9CA3AF; cursor: not-allowed; }
     .btn-submit::after   { content: '→'; margin-left: 8px; opacity: 0.7; }
- 
+
     .msg {
       display: none;
       border-radius: var(--radius);
@@ -316,7 +316,7 @@
     }
     .msg-error   { background: #FEF2F2; border: 1px solid #FECACA; color: var(--error); }
     .msg-success { background: #F0FDF4; border: 1px solid #BBF7D0; color: var(--success); }
- 
+
     /* Debug box — shows raw Power Automate error detail */
     .msg-debug {
       background: #fff8f0;
@@ -331,14 +331,14 @@
       word-break: break-all;
       display: none;
     }
- 
+
     .form-footer {
       text-align: center;
       margin-top: 20px;
       font-size: 11.5px;
       color: var(--text-muted);
     }
- 
+
     @media (max-width: 560px) {
       .header, .form-body { padding: 24px 20px; }
       .row { grid-template-columns: 1fr; }
@@ -346,10 +346,10 @@
     }
   </style>
 </head>
- 
+
 <body>
 <div class="page">
- 
+
   <!-- HEADER -->
   <div class="header">
     <div class="logo-wrap">
@@ -376,19 +376,19 @@
       <strong>Please note:</strong> Submit form within 48 hours prior to volunteering.
     </div>
   </div><!-- END HEADER -->
- 
- 
+
+
   <!-- FORM BODY -->
   <div class="form-body">
- 
+
     <p class="req-note">Fields marked <span>*</span> are required.</p>
- 
+
     <div id="errBox" class="msg msg-error"></div>
     <!-- Raw Power Automate error detail shown below the error box for easier debugging -->
     <div id="debugBox" class="msg-debug"></div>
     <div id="successBox" class="msg msg-success"></div>
- 
- 
+
+
     <!-- SECTION 1 — VOLUNTEER INFORMATION -->
     <div class="section">
       <div class="section-head">
@@ -400,7 +400,7 @@
         <span class="section-title">Volunteer Information</span>
         <div class="section-line"></div>
       </div>
- 
+
       <div class="row">
         <div class="field">
           <label for="fName">First Name <span class="req">*</span></label>
@@ -411,7 +411,7 @@
           <input type="text" id="lName" placeholder="Last name"/>
         </div>
       </div>
- 
+
       <div class="row">
         <div class="field">
           <label for="phone">Phone Number <span class="req">*</span></label>
@@ -427,7 +427,7 @@
           </small>
         </div>
       </div>
- 
+
       <div class="row single">
         <div class="field">
           <label for="orgRep">Organization Representing <span class="req">*</span></label>
@@ -435,8 +435,8 @@
         </div>
       </div>
     </div><!-- END SECTION 1 -->
- 
- 
+
+
     <!-- SECTION 2 — EMERGENCY CONTACT -->
     <div class="section">
       <div class="section-head">
@@ -448,7 +448,7 @@
         <span class="section-title">Emergency Contact</span>
         <div class="section-line"></div>
       </div>
- 
+
       <div class="row">
         <div class="field">
           <label for="ecName">Contact Name <span class="req">*</span></label>
@@ -461,8 +461,8 @@
         </div>
       </div>
     </div><!-- END SECTION 2 -->
- 
- 
+
+
     <!-- SECTION 3 — VOLUNTEER DETAILS -->
     <div class="section">
       <div class="section-head">
@@ -474,7 +474,7 @@
         <span class="section-title">Volunteer Details</span>
         <div class="section-line"></div>
       </div>
- 
+
       <div class="row">
         <div class="field">
           <label for="volDate">Volunteer Date <span class="req">*</span></label>
@@ -490,7 +490,7 @@
           </select>
         </div>
       </div>
- 
+
       <div class="row single">
         <div class="field">
           <label for="volProject">Project <span class="req">*</span></label>
@@ -501,8 +501,8 @@
         </div>
       </div>
     </div><!-- END SECTION 3 -->
- 
- 
+
+
     <!-- SECTION 4 — ACKNOWLEDGEMENTS -->
     <div class="section">
       <div class="section-head">
@@ -514,9 +514,9 @@
         <span class="section-title">Acknowledgements <span class="req">*</span></span>
         <div class="section-line"></div>
       </div>
- 
+
       <div class="ck-list">
- 
+
         <div class="ck-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
           <div style="display: flex; gap: 20px;">
             <label style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; cursor:pointer;">
@@ -528,17 +528,17 @@
           </div>
           <span class="ck-text"><strong>I give permission for photos and/or videos taken during my volunteer service to be used by GIENC® for promotional purposes.</strong></span>
         </div>
- 
+
         <label class="ck-item">
           <input type="checkbox" id="ackCourt"/>
           <span class="ck-text">I am <strong>not</strong> volunteering for lawyer-recommended or court-ordered community service.</span>
         </label>
- 
+
         <label class="ck-item">
           <input type="checkbox" id="ackNoRef"/>
           <span class="ck-text">I understand that GIENC® is unable to provide references or recommendations.</span>
         </label>
- 
+
         <label class="ck-item">
           <input type="checkbox" id="ackLiability"/>
           <span class="ck-text">
@@ -549,25 +549,25 @@
             </ul>
           </span>
         </label>
- 
+
         <label class="ck-item">
           <input type="checkbox" id="ackMinor" onchange="toggleGuardian()"/>
           <span class="ck-text">I am between the ages of 12–15 and understand that a parent or guardian must accompany me at all times while on GIENC® campus.</span>
         </label>
- 
+
       </div><!-- END ck-list -->
- 
- 
+
+
       <!-- GUARDIAN SECTION -->
       <div id="guardianSection" style="display:none; margin-top:16px; background:#ddeaf7; border:1.5px solid #0055A4; border-radius:var(--radius); padding:20px;">
- 
+
         <div style="font-size:13px; font-weight:700; color:#0055A4; margin-bottom:14px;">Parent / Guardian Information Required</div>
- 
+
         <label class="ck-item" style="margin-bottom:14px;">
           <input type="checkbox" id="ackGuardian"/>
           <span class="ck-text">I understand that as a parent/guardian I must accompany the minor volunteer at all times while on GIENC® campus.</span>
         </label>
- 
+
         <div class="row">
           <div class="field">
             <label for="gName">Guardian Full Name <span class="req">*</span></label>
@@ -579,7 +579,7 @@
                    oninput="formatPhone(this)" onkeydown="blockNonNumeric(event)">
           </div>
         </div>
- 
+
         <div class="field" style="margin-top:4px;">
           <label>Guardian Signature <span class="req">*</span></label>
           <div class="sig-wrap">
@@ -593,12 +593,12 @@
             <input type="date" id="gSigDate"/>
           </div>
         </div>
- 
+
       </div><!-- END GUARDIAN SECTION -->
- 
+
     </div><!-- END SECTION 4 -->
- 
- 
+
+
     <!-- SECTION 5 — VOLUNTEER SIGNATURE -->
     <div class="section">
       <div class="section-head">
@@ -610,41 +610,52 @@
         <span class="section-title">Volunteer Signature <span class="req">*</span></span>
         <div class="section-line"></div>
       </div>
- 
+
       <div class="sig-wrap">
         <canvas id="volCanvas" width="600" height="80"></canvas>
         <div class="sig-controls">
           <button type="button" class="btn-clear" onclick="clearCanvas('volCanvas')">Clear Signature</button>
         </div>
       </div>
- 
+
+      <!-- Legal name confirmation -->
+      <div class="field" style="margin-top:16px; background:#f0f7ff; border:1.5px solid #0055A4; border-radius:var(--radius); padding:16px;">
+        <label for="legalName" style="color:#0055A4;">
+          Type Your Full Legal Name <span class="req">*</span>
+        </label>
+        <p style="font-size:12px; color:#4a4a4a; margin:6px 0 10px;">
+          By typing your full legal name below, you confirm that you have read and agree to all terms and acknowledgements above.
+        </p>
+        <input type="text" id="legalName" placeholder="e.g. Jane Marie Smith"/>
+      </div>
+
       <div class="field" style="margin-top:12px;">
         <label for="sigDate">Signature Date <span class="req">*</span></label>
         <input type="date" id="sigDate"/>
       </div>
     </div><!-- END SECTION 5 -->
- 
- 
+
+
     <!-- Submit button -->
     <div class="submit-wrap">
       <button class="btn-submit" id="submitBtn" onclick="submitForm()">Submit Registration</button>
     </div>
- 
+
   </div><!-- END FORM BODY -->
- 
+
   <div class="form-footer">
     Goodwill Industries of Eastern NC, Inc. &nbsp;·&nbsp; Volunteer Program &nbsp;·&nbsp; goodwillenc.org
   </div>
- 
+
 </div><!-- END PAGE -->
- 
- 
+
+
 <script>
- 
+
   // ── POWER AUTOMATE FLOW URL ────────────────────────────────────
   var FLOW_URL = 'https://default09526cd9201c42448e2c85561ffdb8.ee.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2ecdff616a304e41951c62a399400401/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=3cTlj4otIcklJevQh2J7IVQQzfHukdpmhhDeQoghnjk';
- 
- 
+
+
   // ── HELPER: SAFE DATE FORMATTER ───────────────────────────────
   // FIX: The original code used new Date('YYYY-MM-DD').toISOString() which
   // parses the date as UTC midnight, potentially shifting it by a day in
@@ -660,8 +671,8 @@
     var d = new Date(rawValue + 'T12:00:00Z');
     return isNaN(d.getTime()) ? '' : d.toISOString();
   }
- 
- 
+
+
   // ── 1. FORMAT PHONE ────────────────────────────────────────────
   function formatPhone(input) {
     var digits = input.value.replace(/\D/g, '').substring(0, 10);
@@ -673,8 +684,8 @@
       input.value = digits;
     }
   }
- 
- 
+
+
   // ── 2. BLOCK NON-NUMERIC ───────────────────────────────────────
   function blockNonNumeric(e) {
     var allowed = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'];
@@ -682,13 +693,13 @@
       e.preventDefault();
     }
   }
- 
- 
+
+
   // ── 3. VALIDATE EMAIL ──────────────────────────────────────────
   function validateEmail(input) {
     var emailError = document.getElementById('emailError');
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
- 
+
     if (input.value.trim() === '') {
       emailError.style.display = 'none';
       input.style.borderColor = '';
@@ -703,15 +714,15 @@
       input.style.boxShadow = '0 0 0 3px rgba(47,144,63,0.1)';
     }
   }
- 
- 
+
+
   // ── 4. INIT CANVAS ────────────────────────────────────────────
   function initCanvas(id) {
     var canvas = document.getElementById(id);
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
     var drawing = false;
- 
+
     function pos(e) {
       var r = canvas.getBoundingClientRect();
       var scaleX = canvas.width / r.width;
@@ -719,25 +730,25 @@
       var src = e.touches ? e.touches[0] : e;
       return { x: (src.clientX - r.left) * scaleX, y: (src.clientY - r.top) * scaleY };
     }
- 
+
     canvas.addEventListener('mousedown',  function(e){ drawing=true; var p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
     canvas.addEventListener('mousemove',  function(e){ if(!drawing) return; var p=pos(e); ctx.lineTo(p.x,p.y); ctx.strokeStyle='#1A1A2E'; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.stroke(); });
     canvas.addEventListener('mouseup',    function(){ drawing=false; });
     canvas.addEventListener('mouseleave', function(){ drawing=false; });
- 
+
     canvas.addEventListener('touchstart', function(e){ e.preventDefault(); drawing=true; var p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }, {passive:false});
     canvas.addEventListener('touchmove',  function(e){ e.preventDefault(); if(!drawing) return; var p=pos(e); ctx.lineTo(p.x,p.y); ctx.strokeStyle='#1A1A2E'; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.stroke(); }, {passive:false});
     canvas.addEventListener('touchend',   function(){ drawing=false; });
   }
- 
- 
+
+
   // ── 5. CLEAR CANVAS ───────────────────────────────────────────
   function clearCanvas(id) {
     var canvas = document.getElementById(id);
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
   }
- 
- 
+
+
   // ── 6. IS CANVAS BLANK ────────────────────────────────────────
   function isCanvasBlank(id) {
     var canvas = document.getElementById(id);
@@ -747,8 +758,8 @@
     }
     return true;
   }
- 
- 
+
+
   // ── 7. TOGGLE GUARDIAN SECTION ────────────────────────────────
   function toggleGuardian() {
     var checked = document.getElementById('ackMinor').checked;
@@ -759,19 +770,19 @@
       document.getElementById('gSigDate').value = new Date().toISOString().split('T')[0];
     }
   }
- 
- 
+
+
   // ── 8. SUBMIT FORM ────────────────────────────────────────────
   async function submitForm() {
     var errBox     = document.getElementById('errBox');
     var debugBox   = document.getElementById('debugBox');
     var successBox = document.getElementById('successBox');
     var submitBtn  = document.getElementById('submitBtn');
- 
+
     errBox.style.display     = 'none';
     debugBox.style.display   = 'none';
     successBox.style.display = 'none';
- 
+
     // ── STEP A: COLLECT FIELD VALUES ─────────────────────────────
     var fName      = document.getElementById('fName').value.trim();
     var lName      = document.getElementById('lName').value.trim();
@@ -792,7 +803,8 @@
     var gName      = ackMinor ? document.getElementById('gName').value.trim() : '';
     var gPhone     = ackMinor ? document.getElementById('gPhone').value.trim() : '';
     var ackGuardian = ackMinor ? document.getElementById('ackGuardian').checked : true;
- 
+    var legalName   = document.getElementById('legalName').value.trim();
+
     // ── STEP B: VALIDATE ─────────────────────────────────────────
     var errors = [];
     if (!fName)      errors.push('First Name');
@@ -812,14 +824,15 @@
     if (!ackCourt || !ackNoRef || !ackLiab) errors.push('all Acknowledgements');
     if (!ackPhoto)   errors.push('Photo Permission (Yes or No)');
     if (isCanvasBlank('volCanvas')) errors.push('Volunteer Signature');
+    if (!legalName) errors.push('Full Legal Name');
     if (!document.getElementById('sigDate').value) errors.push('Signature Date');
- 
+
     if (ackMinor && !gName)       errors.push('Guardian Name');
     if (ackMinor && !gPhone)      errors.push('Guardian Phone');
     if (ackMinor && !ackGuardian) errors.push('Guardian Acknowledgement');
     if (ackMinor && isCanvasBlank('gCanvas')) errors.push('Guardian Signature');
     if (ackMinor && !document.getElementById('gSigDate').value) errors.push('Guardian Signature Date');
- 
+
     // ── STEP C: SHOW ERRORS AND STOP ────────────────────────────
     if (errors.length) {
       errBox.innerHTML = '⚠️ Please complete the following required fields: <strong>' + errors.join(', ') + '</strong>.';
@@ -827,10 +840,10 @@
       errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
- 
+
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting…';
- 
+
     try {
       // ── STEP D: BUILD PAYLOAD ───────────────────────────────────
       //
@@ -845,12 +858,12 @@
       //
       // FIX 3 — Boolean coercion: ackPhoto was compared as a string ("Yes"),
       //          ensure the Photo field is a proper JS boolean.
- 
+
       var sigBase64  = document.getElementById('volCanvas').toDataURL('image/png').split(',')[1];
       var gSigBase64 = ackMinor
         ? document.getElementById('gCanvas').toDataURL('image/png').split(',')[1]
         : '';
- 
+
       var payload = {
         FName:      fName,
         LName:      lName,
@@ -873,23 +886,24 @@
         GSig:       gSigBase64,                // FIX 2: "" instead of null
         GDate:      ackMinor ? safeDate(document.getElementById('gSigDate').value) : '',  // FIX 1+2
         SigName:    sigBase64,
+        LegalName:  legalName,
         SigDate:    safeDate(document.getElementById('sigDate').value),  // FIX 1
         Submit:     new Date().toISOString()
       };
- 
+
       // ── STEP E: SEND TO POWER AUTOMATE ──────────────────────────
       var response = await fetch(FLOW_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
- 
+
       // FIX 4 — Read the response body BEFORE checking .ok so we can
       //          surface the real Power Automate error message (not just
       //          the HTTP status code) if the submission fails.
       var responseText = '';
       try { responseText = await response.text(); } catch(e) { /* ignore */ }
- 
+
       if (!response.ok) {
         // Show the raw Power Automate error detail in the amber debug box
         // so it's easy to diagnose field-mapping issues in the flow.
@@ -899,12 +913,12 @@
         }
         throw new Error('Submission failed with status: ' + response.status);
       }
- 
+
       // ── STEP F: SUCCESS ──────────────────────────────────────────
       successBox.innerHTML = '✅ <strong>Thank you, ' + fName + '!</strong> Your volunteer registration has been submitted successfully. We look forward to seeing you!';
       successBox.style.display = 'block';
       successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
- 
+
       // Reset all fields
       document.querySelectorAll('input[type=text], input[type=tel], input[type=email], input[type=date], select').forEach(function(el){ el.value = ''; });
       document.querySelectorAll('input[type=checkbox], input[type=radio]').forEach(function(el){ el.checked = false; });
@@ -913,27 +927,26 @@
       document.getElementById('guardianSection').style.display = 'none';
       // Re-fill today's date after reset
       document.getElementById('sigDate').value = new Date().toISOString().split('T')[0];
- 
+
     } catch(err) {
       errBox.innerHTML = '❌ <strong>Submission error:</strong> ' + err.message + '<br><small>Please try again or contact GIENC® staff for assistance.</small>';
       errBox.style.display = 'block';
       errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
       console.error('Submission error:', err);
- 
+
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Registration';
     }
   }
- 
- 
+
+
   // ── 9. ON PAGE LOAD ───────────────────────────────────────────
   window.addEventListener('load', function() {
     initCanvas('volCanvas');
     document.getElementById('sigDate').value = new Date().toISOString().split('T')[0];
   });
- 
+
 </script>
 </body>
 </html>
- 
